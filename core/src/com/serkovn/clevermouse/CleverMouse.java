@@ -29,9 +29,9 @@ public class  CleverMouse extends ApplicationAdapter {
 	int locationMouse;
 	int answerSpeed = 8;
 	int answerNumber = 5;
-	float tubeY[]= new float[answerNumber];
+	float tubeY;
 	float distanceBetweenAnswer;
-	Rectangle[] answerTrue;
+	Rectangle answerTrue;
 	int oneIsFour;
 	Rectangle mRectangleMouse;
 	ShapeRenderer shapeRenderer;
@@ -57,11 +57,8 @@ public class  CleverMouse extends ApplicationAdapter {
 		distanceBetweenAnswer = Gdx.graphics.getHeight();
 		oneIsFour = mRandom.nextInt(4);
 		mRectangleMouse = new Rectangle();
-		answerTrue = new Rectangle[answerNumber];
-		for (int i = 0; i < answerNumber;  i++) {
-			tubeY[i] = Gdx.graphics.getHeight()/2 + Gdx.graphics.getHeight()/4 + i * distanceBetweenAnswer;
-			answerTrue[i] = new Rectangle();
-		}
+		answerTrue = new Rectangle();
+		tubeY = Gdx.graphics.getHeight()/2 + Gdx.graphics.getHeight()/4;
 	}
 
 	@Override
@@ -86,35 +83,35 @@ public class  CleverMouse extends ApplicationAdapter {
 			if ((locationClick >= Gdx.graphics.getWidth()/2 + Gdx.graphics.getWidth()/4 ))
 				locationMouse = Gdx.graphics.getWidth() - Gdx.graphics.getWidth()/8 - Gdx.graphics.getWidth()/10;
 		}
-		for (int i = 0; i < answerNumber;  i++) {
-			if (tubeY[i] < (Gdx.graphics.getHeight()/6 - 20) ) {
-				tubeY[i] = answerNumber * distanceBetweenAnswer;
-				oneIsFour = mRandom.nextInt(4);
-				Truth = false;
-				Gdx.app.log("intersector","Not");
+
+		if (tubeY < (Gdx.graphics.getHeight()/6) ) {
+			if (Math.abs(mRectangleMouse.getX()-answerTrue.getX()) <40) {
+				Gdx.app.log("intersector","Yes");
 			} else {
-				tubeY[i] -= answerSpeed;
+				Gdx.app.log("intersector","Not");
 			}
+			tubeY += distanceBetweenAnswer;
+			oneIsFour = mRandom.nextInt(4);
 
-			batch.draw(answer1, 0, tubeY[i], Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
-			batch.draw(answer2, Gdx.graphics.getWidth() / 4, tubeY[i], Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
-			batch.draw(answer3, Gdx.graphics.getWidth() / 2, tubeY[i], Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
-			batch.draw(answer4, Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, tubeY[i], Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
-			switch (oneIsFour){
-				case 0 :
-					answerTrue[i] = new Rectangle( 0, (int) tubeY[i],answer1.getWidth(),answer1.getHeight());
-					break;
-				case 1:
-					answerTrue[i] = new Rectangle( Gdx.graphics.getWidth() / 4, (int) tubeY[i],answer2.getWidth(), answer2.getHeight());
-					break;
-				case 2:
-					answerTrue[i] = new Rectangle( Gdx.graphics.getWidth() / 2, (int) tubeY[i], answer3.getWidth(), answer3.getHeight());
-					break;
-				case 3:
-					answerTrue[i] = new Rectangle( Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, (int) tubeY[i],answer4.getWidth(),answer4.getHeight());
-			}
-
-
+		} else {
+			tubeY -= answerSpeed;
+		}
+		batch.draw(answer1, 0, tubeY, Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
+		batch.draw(answer2, Gdx.graphics.getWidth() / 4, tubeY, Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
+		batch.draw(answer3, Gdx.graphics.getWidth() / 2, tubeY, Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
+		batch.draw(answer4, Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, tubeY, Gdx.graphics.getWidth() / 4, Gdx.graphics.getWidth() / 4);
+		switch (oneIsFour){
+			case 0 :
+				answerTrue = new Rectangle( 0, (int) tubeY,answer1.getWidth(),answer1.getHeight());
+				break;
+			case 1:
+				answerTrue = new Rectangle( Gdx.graphics.getWidth() / 4, (int) tubeY,answer2.getWidth(), answer2.getHeight());
+				break;
+			case 2:
+				answerTrue = new Rectangle( Gdx.graphics.getWidth() / 2, (int) tubeY, answer3.getWidth(), answer3.getHeight());
+				break;
+			case 3:
+				answerTrue= new Rectangle( Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, (int) tubeY,answer4.getWidth(),answer4.getHeight());
 		}
 
 
@@ -123,31 +120,20 @@ public class  CleverMouse extends ApplicationAdapter {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(Color.BLUE);
 		shapeRenderer.rect(locationMouse, 0,Gdx.graphics.getWidth()/5,Gdx.graphics.getHeight()/6);
-		for (int i = 0; i < answerNumber;  i++) {
-			switch (oneIsFour) {
-				case 0:
-					shapeRenderer.rect(0, (int) tubeY[i], answer1.getWidth() / 4, answer1.getHeight() / 4);
-					break;
-				case 1:
-					shapeRenderer.rect(Gdx.graphics.getWidth() / 4, (int) tubeY[i], answer2.getWidth() / 4, answer2.getHeight() / 4);
-					break;
-				case 2:
-					shapeRenderer.rect(Gdx.graphics.getWidth() / 2, (int) tubeY[i], answer3.getWidth() / 4, answer3.getHeight() / 4);
-					break;
-				case 3:
-					shapeRenderer.rect(Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, (int) tubeY[i], answer4.getWidth() / 4, answer4.getHeight() / 4);
-					break;
-			}
-
-			if (tubeY[i] < (Gdx.graphics.getHeight()/6 -10) ){
-				if (Intersector.overlaps(mRectangleMouse,answerTrue[i])) {
-					Truth = true;
-					Gdx.app.log("intersector","Oy");
-				}
-			}
-
+		switch (oneIsFour) {
+			case 0:
+				shapeRenderer.rect(0, (int) tubeY, answer1.getWidth() / 4, answer1.getHeight() / 4);
+				break;
+			case 1:
+				shapeRenderer.rect(Gdx.graphics.getWidth() / 4, (int) tubeY, answer2.getWidth() / 4, answer2.getHeight() / 4);
+				break;
+			case 2:
+				shapeRenderer.rect(Gdx.graphics.getWidth() / 2, (int) tubeY, answer3.getWidth() / 4, answer3.getHeight() / 4);
+				break;
+			case 3:
+				shapeRenderer.rect(Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, (int) tubeY, answer4.getWidth() / 4, answer4.getHeight() / 4);
+				break;
 		}
-
 
 
 		shapeRenderer.end();
