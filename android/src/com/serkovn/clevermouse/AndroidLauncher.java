@@ -14,8 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new CleverMouse(), config);
-		SharedPreferences sharedPreferences = this.getSharedPreferences("record", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = sharedPreferences.edit();
 	}
 }
 

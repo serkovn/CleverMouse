@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.Intersector;
@@ -29,7 +30,7 @@ public class  CleverMouse extends ApplicationAdapter {
 	Texture play;
 	int locationClick;
 	int locationMouse;
-	int answerSpeed = 5;
+	int answerSpeed = 7;
 	float tubeY;
 	float distanceBetweenAnswer;
 	Rectangle answerTrue;
@@ -49,7 +50,7 @@ public class  CleverMouse extends ApplicationAdapter {
 	Preferences preferences;
 	HashMap question;
 	HashMap	answerQuestion;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -67,8 +68,8 @@ public class  CleverMouse extends ApplicationAdapter {
 		distanceBetweenAnswer = Gdx.graphics.getHeight();
 		oneIsFour = mRandom.nextInt(4);
 		playQuestion();
-		falseAnswer = mRandom.nextInt(answerQuestion.size()) + 1;
-		rightAnswer = mRandom.nextInt(question.size());
+		falseAnswer = mRandom.nextInt(answerQuestion.size());
+		rightAnswer = mRandom.nextInt(30);;
 		mRectangleMouse = new Rectangle();
 		answerTrue = new Rectangle();
 		tubeY = Gdx.graphics.getHeight()/2 + Gdx.graphics.getHeight()/4;
@@ -136,8 +137,19 @@ public class  CleverMouse extends ApplicationAdapter {
 				}
 				tubeY += distanceBetweenAnswer;
 				oneIsFour = mRandom.nextInt(4);
-				falseAnswer = mRandom.nextInt(answerQuestion.size()) + 1;
-				rightAnswer = mRandom.nextInt(question.size());
+				falseAnswer = mRandom.nextInt(answerQuestion.size());
+				if (amount <= 10) {
+					answerSpeed = 7;
+					rightAnswer = mRandom.nextInt(30);
+				} else if (amount <= 25) {
+					answerSpeed = 5;
+					rightAnswer = mRandom.nextInt(40) + 30;
+				} else if (amount <= 40){
+					answerSpeed = 4;
+					rightAnswer = mRandom.nextInt(40) + 70;
+				} else {
+					start = 3;
+				}
 
 			} else {
 				tubeY -= answerSpeed;
@@ -149,31 +161,31 @@ public class  CleverMouse extends ApplicationAdapter {
 			switch (oneIsFour) {
 				case 0:
 					answerTrue = new Rectangle(0, (int) tubeY, answer.getWidth(), answer.getHeight());
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 32 , (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
 					break;
 				case 1:
 					answerTrue = new Rectangle(Gdx.graphics.getWidth() / 4, (int) tubeY, answer.getWidth(), answer.getHeight());
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
 					break;
 				case 2:
 					answerTrue = new Rectangle(Gdx.graphics.getWidth() / 2, (int) tubeY, answer.getWidth(), answer.getHeight());
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
 					break;
 				case 3:
 					answerTrue = new Rectangle(Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4, (int) tubeY, answer.getWidth(), answer.getHeight());
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
-					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 16, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer - falseAnswer)%question.size())), Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs(rightAnswer + falseAnswer)%question.size())), Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + (Math.abs((rightAnswer +1) * falseAnswer)%question.size())), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
+					trueAnswer.draw(batch,"" +  answerQuestion.get("" + rightAnswer), Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 4 + Gdx.graphics.getWidth() / 32, (int) tubeY + Gdx.graphics.getWidth() / 8);
 			}
 			questionText.draw(batch,"" +  question.get("" + rightAnswer), Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 120);
 			scoreFont.draw(batch, String.valueOf(amount), Gdx.graphics.getWidth() - 250, Gdx.graphics.getHeight() - 20);
@@ -196,7 +208,8 @@ public class  CleverMouse extends ApplicationAdapter {
 				amount = 0;
 				notAmount = 0;
 			}
-		} else {
+		}
+		else if (start == 0) {
 			batch.begin();
 			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.draw(play, Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/4 , Gdx.graphics.getHeight()/2 - Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/2, Gdx.graphics.getWidth()/2);
@@ -207,6 +220,13 @@ public class  CleverMouse extends ApplicationAdapter {
 				amount = 0;
 				notAmount = 0;
 			}
+		}
+		else {
+			batch.begin();
+			batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			scoreFont.draw(batch, "YOU WIN",Gdx.graphics.getHeight()/4, Gdx.graphics.getHeight()/2);
+			scoreFont.draw(batch, "High Score " + highScore, Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 50);
+			batch.end();
 		}
 		/*shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(Color.BLUE);
@@ -289,7 +309,7 @@ public class  CleverMouse extends ApplicationAdapter {
 		question.put("27","2009 + 54 = ?");
 		answerQuestion.put("27", "2063");
 		question.put("28","117 - 48 = ?");
-		answerQuestion.put("29", " 69");
+		answerQuestion.put("29", "69");
 		question.put("29","460 : 20 = ?");
 		answerQuestion.put("29", "23");
 
@@ -377,46 +397,86 @@ public class  CleverMouse extends ApplicationAdapter {
 		answerQuestion.put("69", "2(5/7)");
 
 
-
-
-
-
-
-		question.put("7","1/3 + 1/2 = ?");
-		answerQuestion.put("7", "5/6");
-		question.put("8","1/6 * 5/7 = ?");
-		answerQuestion.put("8", "5/42");
-		question.put("9","3,2 - 1/2 = ?");
-		answerQuestion.put("9", "2,7");
-		question.put("10","1/3 : 0,25 = ?");
-		answerQuestion.put("10", "1(1/3)");
-		question.put("18","5/22 - 2/11 = ?");
-		answerQuestion.put("18", "1/22");
-		question.put("19","3/4 * 1/6 = ?");
-		answerQuestion.put("19", "3/24");
-		question.put("20","1,4 - 1/5 = ?");
-		answerQuestion.put("20", "1,2");
-		question.put("21","3(1/3) * 0,3 = ?");
-		answerQuestion.put("21", "1");
-		question.put("29","9/14 - 3/7 = ?");
-		answerQuestion.put("29", "3/14");
-		question.put("30","4/7 : 9/14 = ?");
-		answerQuestion.put("30", "8/9");
-		question.put("31","2(1/3) + 1,2 = ?");
-		answerQuestion.put("31", "3(8/15)");
-		question.put("32","1(1/14) * 0,7 = ?");
-		answerQuestion.put("32", "15/98");
-		question.put("40","1/6 + 1(1/3) = ?");
-		answerQuestion.put("40", "1,5");
-		question.put("41","2(1/3) : 7/9 = ?");
-		answerQuestion.put("41", "3");
-		question.put("42","0,4 + 2(2/7) = ?");
-		answerQuestion.put("42", "2(24/35");
-		question.put("43","0,9 : 1/9 = ?");
-		answerQuestion.put("43", "8,1");
-
-
-
+		question.put("70","1/3 + 1/2 = ?");
+		answerQuestion.put("70", "5/6");
+		question.put("71","1/6 * 5/7 = ?");
+		answerQuestion.put("71", "5/42");
+		question.put("72","3,2 - 1/2 = ?");
+		answerQuestion.put("72", "2,7");
+		question.put("73","1/3 : 0,25 = ?");
+		answerQuestion.put("73", "1(1/3)");
+		question.put("74","5/22 - 2/11 = ?");
+		answerQuestion.put("74", "1/22");
+		question.put("75","3/4 * 1/6 = ?");
+		answerQuestion.put("75", "3/24");
+		question.put("76","1,4 - 1/5 = ?");
+		answerQuestion.put("76", "1,2");
+		question.put("77","3(1/3) * 0,3 = ?");
+		answerQuestion.put("77", "1");
+		question.put("78","9/14 - 3/7 = ?");
+		answerQuestion.put("78", "3/14");
+		question.put("79","4/7 : 9/14 = ?");
+		answerQuestion.put("79", "8/9");
+		question.put("80","2(1/3) + 1,2 = ?");
+		answerQuestion.put("80", "3(8/15)");
+		question.put("81","1(1/14) * 0,7 = ?");
+		answerQuestion.put("81", "15/98");
+		question.put("82","1/6 + 1(1/3) = ?");
+		answerQuestion.put("82", "1,5");
+		question.put("83","2(1/3) : 7/9 = ?");
+		answerQuestion.put("83", "3");
+		question.put("84","0,4 + 2(2/7) = ?");
+		answerQuestion.put("84", "2(24/35");
+		question.put("85","0,9 : 1/9 = ?");
+		answerQuestion.put("85", "8,1");
+		question.put("86","1/9 + 2(1/3) = ?");
+		answerQuestion.put("86", "2(4/9)");
+		question.put("87","1/2 * 3 = ?");
+		answerQuestion.put("87", "1,5");
+		question.put("88","4,5 - 1(1/5) = ?");
+		answerQuestion.put("88", "5,7");
+		question.put("89","9/14 * 0,7 = ?");
+		answerQuestion.put("89", "9/20");
+		question.put("90","1/2 + 2/9 = ?");
+		answerQuestion.put("90", "13/18");
+		question.put("91","6 : 3/11 = ?");
+		answerQuestion.put("91", "22");
+		question.put("92","1/6 + 0,4 = ?");
+		answerQuestion.put("92", "17/30");
+		question.put("93","5/12 : 0,6 = ?");
+		answerQuestion.put("93", "25/36");
+		question.put("94","9/15 - 3/5 = ?");
+		answerQuestion.put("94", "0");
+		question.put("95","9/22 : 6 = ?");
+		answerQuestion.put("95", "3/44");
+		question.put("96","4,7 - 4(2/3) = ?");
+		answerQuestion.put("96", "1/30");
+		question.put("97","2(1/3) * 0,3 = ?");
+		answerQuestion.put("97", "0,7");
+		question.put("98","5/14 + 6/7 = ?");
+		answerQuestion.put("98", "1(3/14)");
+		question.put("99","2(1/3) * 3/7 = ?");
+		answerQuestion.put("99", "1");
+		question.put("100","0,5 + 3/7 = ?");
+		answerQuestion.put("100", "13/14");
+		question.put("101","2(1/3) : 0,7 = ?");
+		answerQuestion.put("101", "3(1/3)");
+		question.put("102","2/9 + 1/3 = ?");
+		answerQuestion.put("102", "5/9");
+		question.put("103","1(1/6) : 7/18 = ?");
+		answerQuestion.put("103", "3");
+		question.put("104","2/3 + 0,25 = ?");
+		answerQuestion.put("104", "11/12");
+		question.put("105","0,3 * 2(2/3) = ?");
+		answerQuestion.put("105", "0,8");
+		question.put("106","1/4 - 1/6 = ?");
+		answerQuestion.put("106", "1/12");
+		question.put("107","2(1/3) : 4(2/3) = ?");
+		answerQuestion.put("107", "0,5");
+		question.put("108","0,75 - 1/2 = ?");
+		answerQuestion.put("108", "1/4");
+		question.put("109","0,3 : 2(2/1) = ?");
+		answerQuestion.put("109", "0,12");
 	}
 	@Override
 	public void dispose () {
